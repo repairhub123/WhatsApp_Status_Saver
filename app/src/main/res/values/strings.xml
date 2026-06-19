@@ -1,7 +1,7 @@
 <resources>
 
-    <string name="app_name">Status Downloader</string>
-    <string name="by_gautham">By Gautham</string>
+    <string name="app_name">WA Status Downloader</string>
+    <string name="by_gautham">By repairhub123</string>
     <string name="images">Images</string>
     <string name="videos">Videos</string>
     <string name="save">Save</string>
@@ -30,12 +30,12 @@
 
     <string name="saved_files">Saved Files</string>
     <string name="no_files_found">No Files Found</string>
-    <string name="gautham">Gautham</string>
+    <string name="gautham">repairhub123</string>
     <string name="app_version">App Version</string>
-    <string name="mail_id">gauthamnadar12@gmail.com</string>
+    <string name="mail_id"></string>
     <string name="email">Email</string>
     <string name="contact">Contact</string>
-    <string name="telegram_link">https://t.me/Mellow04</string>
+    <string name="telegram_link"></string>
     <string name="developer">Developer</string>
     <string name="check_for_update">Check for update</string>
     <string name="cant_find_whatsapp_dir">Cant find WhatsApp Dir</string>
