@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#075E54</color>
+    <color name="colorPrimaryDark">#054D44</color>
+    <color name="colorAccent">#25D366</color>
 
-    <color name="white">#FFFF</color>
-    <color name="dark">#AAAA</color>
-    <color name="black">#000</color>
-    <color name="holo_orange">@android:color/holo_orange_light</color>
+    <color name="white">#FFFFFF</color>
+    <color name="dark">#B2DFDB</color>
+    <color name="black">#000000</color>
+    <color name="holo_orange">#25D366</color>
 
+    <color name="tabBackground">#075E54</color>
+    <color name="tabSelected">#FFFFFF</color>
+    <color name="tabUnselected">#B2DFDB</color>
+    <color name="statusBar">#054D44</color>
+    <color name="cardBackground">#1A1A1A</color>
 </resources>
