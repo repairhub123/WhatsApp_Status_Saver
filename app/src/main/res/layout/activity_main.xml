@@ -1,44 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/appBarLayout">
+        android:id="@+id/appBarLayout"
+        android:background="#075E54"
+        app:elevation="4dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:id="@+id/toolbarMainActivity"
-            app:titleTextColor="@color/white"
+            android:background="#075E54"
+            app:titleTextColor="#FFFFFF"
+            app:subtitleTextColor="#DCF8C6"
+            app:title="WA Status Downloader"
             android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-            app:popupTheme="@style/PopupMenuStyle">
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:popupTheme="@style/PopupMenuStyle"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/holo_orange"
-            app:tabIndicatorHeight="4dp"
-            app:tabTextColor="@color/dark"
-            app:tabSelectedTextColor="@color/white"/>
+            android:background="#075E54"
+            app:tabIndicatorColor="#25D366"
+            app:tabIndicatorHeight="3dp"
+            app:tabTextColor="#B2DFDB"
+            app:tabSelectedTextColor="#FFFFFF"
+            app:tabRippleColor="#1AFFFFFF"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/appBarLayout"
         android:id="@+id/viewPager"
         android:layout_above="@+id/adView"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
@@ -46,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-1429498217664970/1356420052"/>
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-1429498217664970/1356420052"/>
 
 </RelativeLayout>
