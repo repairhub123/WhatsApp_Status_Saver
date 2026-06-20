@@ -29,7 +29,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.LoadAdError;
@@ -88,18 +87,27 @@ public class MainActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
-        // AdMob initialize
+        // AdMob Initialize
         MobileAds.initialize(this, initializationStatus -> {});
 
         // Banner Ad
-        mAdView = new AdView(this);
-        mAdView.setAdSize(AdSize.BANNER);
-        mAdView.setAdUnitId(BANNER_AD_UNIT_ID);
-        AdRequest bannerRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(bannerRequest);
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
-        // Interstitial Ad load
-        loadInterstitialAd();
+        // Interstitial Ad Load
+        InterstitialAd.load(this, INTERSTITIAL_AD_UNIT_ID,
+                new AdRequest.Builder().build(),
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        mInterstitialAd = interstitialAd;
+                    }
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        mInterstitialAd = null;
+                    }
+                });
 
         MaterialToolbar toolbar = findViewById(R.id.toolbarMainActivity);
         TabLayout tabLayout = findViewById(R.id.tabLayout);
@@ -120,37 +128,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-                // Interstitial ad tab change pe dikhao
-                showInterstitialAd();
+                // Interstitial show karo tab change pe
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(MainActivity.this);
+                    mInterstitialAd = null;
+                }
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {}
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
-    }
-
-    private void loadInterstitialAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        InterstitialAd.load(this, INTERSTITIAL_AD_UNIT_ID, adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        mInterstitialAd = interstitialAd;
-                    }
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        mInterstitialAd = null;
-                    }
-                });
-    }
-
-    private void showInterstitialAd() {
-        if (mInterstitialAd != null) {
-            mInterstitialAd.show(this);
-            mInterstitialAd = null;
-            loadInterstitialAd();
-        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -216,7 +204,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mAdView != null) mAdView.resume();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && arePermissionDenied()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 requestPermissionQ();
@@ -233,18 +220,6 @@ public class MainActivity extends AppCompatActivity {
             Common.APP_DIR = getExternalFilesDir("StatusDownloader").getPath();
             Log.d("App Path", Common.APP_DIR);
         }
-    }
-
-    @Override
-    protected void onPause() {
-        if (mAdView != null) mAdView.pause();
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (mAdView != null) mAdView.destroy();
-        super.onDestroy();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
