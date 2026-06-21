@@ -11,6 +11,10 @@
     },
     "android": {
       "package": "com.statusapp.saver",
+      "gradleProperties": {
+        "android.enableMinifyInReleaseBuilds": "true",
+        "android.enableShrinkResourcesInReleaseBuilds": "true"
+      },
       "permissions": [
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
