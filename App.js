@@ -2,17 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, StatusBar, Platform, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
-import { Home as HomeIcon, FolderHeart, Settings as SettingsIcon, RefreshCw, Smartphone } from 'lucide-react-native';
+import { Home as HomeIcon, FolderHeart, Settings as SettingsIcon, RefreshCw, Smartphone, Wrench as ToolsIcon } from 'lucide-react-native';
 import { COLORS, SPACING, BORDER_RADIUS } from './src/theme';
 import StoragePermissionScreen from './src/components/StoragePermissionScreen';
 import StatusGrid from './src/components/StatusGrid';
 import SavedGalleryScreen from './src/components/SavedGalleryScreen';
 import SettingsScreen from './src/components/SettingsScreen';
+import ToolsScreen from './src/components/ToolsScreen';
 import MediaPreviewModal from './src/components/MediaPreviewModal';
 import { MockBannerAd } from './src/utils/AdManager';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home'); // 'home' | 'saved' | 'settings'
+  const [activeTab, setActiveTab] = useState('home'); // 'home' | 'saved' | 'tools' | 'settings'
   const [homeSubTab, setHomeSubTab] = useState('photos'); // 'photos' | 'videos' (sub-tabs under Home)
   const [whatsappType, setWhatsappType] = useState('standard'); // 'standard' | 'business'
   const [directoryUri, setDirectoryUri] = useState(null);
@@ -270,6 +271,11 @@ export default function App() {
               />
             )}
 
+            {/* TOOLS Tab */}
+            {activeTab === 'tools' && (
+              <ToolsScreen />
+            )}
+
             {/* SETTINGS Tab */}
             {activeTab === 'settings' && (
               <SettingsScreen
@@ -308,6 +314,18 @@ export default function App() {
               {activeTab === 'saved' && <View style={styles.activeTabDot} />}
             </View>
             <Text style={[styles.tabLabel, activeTab === 'saved' && styles.tabLabelActive]}>Saved</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.tabItem, activeTab === 'tools' && styles.tabItemActive]}
+            onPress={() => setActiveTab('tools')}
+            activeOpacity={0.8}
+          >
+            <View style={styles.tabIconWrapper}>
+              <ToolsIcon size={20} color={activeTab === 'tools' ? COLORS.primary : COLORS.textSecondary} />
+              {activeTab === 'tools' && <View style={styles.activeTabDot} />}
+            </View>
+            <Text style={[styles.tabLabel, activeTab === 'tools' && styles.tabLabelActive]}>Tools</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
