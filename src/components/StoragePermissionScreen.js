@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Platform, Animated } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Platform, Animated, Alert } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Shield, FolderOpen, AlertCircle, ArrowRight } from 'lucide-react-native';
@@ -32,16 +32,34 @@ export default function StoragePermissionScreen({ onPermissionGranted }) {
   const handleRequestPermission = async (isBusiness = false) => {
     try {
       const initialUri = isBusiness ? WHATSAPP_BUSINESS_SAF_URI : WHATSAPP_SAF_URI;
-      const response = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync(initialUri);
+      console.log('Requesting SAF permission for initial URI:', initialUri);
       
-      if (response.directoryUri && response.success) {
+      let response;
+      try {
+        response = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync(initialUri);
+      } catch (innerError) {
+        console.warn('Failed to open SAF picker with initial location, falling back to general folder picker:', innerError);
+        // Fall back to opening the general folder picker at root
+        response = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+      }
+      
+      if (response && response.directoryUri && response.success) {
         const storageKey = isBusiness ? '@whatsapp_business_uri' : '@whatsapp_standard_uri';
         await AsyncStorage.setItem(storageKey, response.directoryUri);
         await AsyncStorage.setItem('@active_whatsapp_type', isBusiness ? 'business' : 'standard');
         onPermissionGranted(response.directoryUri, isBusiness ? 'business' : 'standard');
+      } else {
+        Alert.alert(
+          'Permission Required',
+          'You must select the folder and grant permission for the app to read statuses. Please click the button again and click "Use this folder".'
+        );
       }
     } catch (error) {
-      console.error('Error requesting SAF directory permission:', error);
+      console.error('Fatal error requesting SAF directory permission:', error);
+      Alert.alert(
+        'System Picker Error',
+        'Could not launch the Android folder picker. Please ensure your device has a files manager app installed.'
+      );
     }
   };
 
