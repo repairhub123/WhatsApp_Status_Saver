@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, View, Modal, Image, TouchableOpacity, ScrollView, Dimensions, ActivityIndicator } from 'react-native';
-import { Video } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
@@ -10,11 +10,29 @@ import { MockInterstitialAd } from '../utils/AdManager';
 
 const { width, height } = Dimensions.get('window');
 
+// Helper component to manage the VideoPlayer instance lifetime
+function VideoPlayerComponent({ uri }) {
+  const player = useVideoPlayer(uri, (player) => {
+    player.loop = true;
+    player.play();
+  });
+
+  return (
+    <VideoView
+      player={player}
+      style={styles.videoPlayer}
+      contentFit="contain"
+      nativeControls={true}
+      allowsFullscreen={true}
+      allowsPictureInPicture={true}
+    />
+  );
+}
+
 export default function MediaPreviewModal({ visible, media, onClose, onSaveComplete, isSavedAsset, onDeleteAsset }) {
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState({ visible: false, message: '', type: 'success' });
   const [adVisible, setAdVisible] = useState(false);
-  const videoRef = useRef(null);
 
   if (!media) return null;
 
@@ -148,17 +166,7 @@ export default function MediaPreviewModal({ visible, media, onClose, onSaveCompl
         {/* Media Preview Area */}
         <View style={styles.mediaContainer}>
           {isVideo ? (
-            <Video
-              ref={videoRef}
-              source={{ uri: media.uri }}
-              rate={1.0}
-              volume={1.0}
-              isMuted={false}
-              resizeMode="contain"
-              shouldPlay={true}
-              useNativeControls
-              style={styles.videoPlayer}
-            />
+            <VideoPlayerComponent uri={media.uri} />
           ) : (
             <ScrollView
               maximumZoomScale={3}
