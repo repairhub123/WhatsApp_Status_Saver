@@ -41,6 +41,14 @@
           "photosPermission": "Allow this app to save WhatsApp photos to your gallery.",
           "saveToLibraryPermission": "Allow this app to save WhatsApp videos and photos to your gallery."
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "extraProguardRules": "-keep class expo.modules.** { *; }\n-keep class kotlin.reflect.** { *; }\n-keep class kotlin.jvm.internal.** { *; }"
+          }
+        }
       ]
     ],
     "extra": {
